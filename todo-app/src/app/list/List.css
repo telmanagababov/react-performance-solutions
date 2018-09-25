@@ -1,0 +1,79 @@
+.list-container {
+  width: 480px;
+  margin: 40px;
+}
+
+.controls {
+  padding: 20px;
+  margin-bottom: 20px;
+  display: block;
+  width: 100%;
+}
+input {
+  border: 3px solid #297f9b;
+  border-radius: 6px;
+  color: #17b8ee;
+  font-family: cursive;
+  font-size: 32px;
+  line-height: 44px;
+  padding: 4px;
+}
+input:focus {
+  border: 3px solid #aec32d;
+  border-radius: 6px;
+}
+.input-name {
+  width: calc(100% - 110px);
+  margin-right: 4px;
+}
+.input-value {
+  width: 78px;
+}
+
+
+.list {
+  padding: 20px;
+  width: 100%;
+  height: 380px;
+  overflow: hidden auto;
+}
+.item {
+  display: inline-block;
+  font-size: 20px;
+  color: #327a91;
+  padding: 8px;
+  width: 100%;
+  font-weight: bold;
+  font-family: cursive;
+  text-shadow: 2px 2px 4px #52acca;
+}
+.item-name {
+  display: inline-block;
+  width: calc(100% - 80px);
+}
+.item-value {
+  display: inline-block;
+  width: 80px;
+  background: #e02c2c;
+  border-radius: 60px;
+  text-align: center;
+  color: wheat;
+}
+
+.footer {
+  padding: 20px;
+  text-align: right;
+  width: 100%;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 20px;
+}
+*::-webkit-scrollbar-track {
+  background: #ddd;
+  border-radius: 20px;
+}
