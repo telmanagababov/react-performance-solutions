@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Item from './Item';
 import { generateItems } from './items';
 import './List.css';
 
@@ -10,12 +11,8 @@ class List extends Component {
         name: '',
         value: '',
       },
-      items: generateItems(200),
+      items: generateItems(props.size),
     };
-  }
-
-  componentDidMount() {
-    this.props.onChange(this.state.input, this.state.items);
   }
 
   getValue(value) {
@@ -50,6 +47,17 @@ class List extends Component {
     })
   }
 
+  handleDelete(index) {
+    const { items, input } = this.state;
+    const { onChange } = this.props;
+
+    this.setState({
+      items: items.slice(0, index).concat(items.slice(index + 1)),
+    }, () => {
+      onChange(input, this.state.items);
+    });
+  }
+
   render() {
     const { items, input } = this.state;
 
@@ -70,14 +78,12 @@ class List extends Component {
 
         <div className="list">
           {items.map((item, i) => (
-            <div className="item" key={`${item.name}:${i}`}>
-              <div className="item-name">
-                {item.name}
-              </div>
-              <div className="item-value">
-                {this.getValue(item.value)}
-              </div>
-            </div>
+            <Item 
+              key={`${item.name}:${i}`}
+              name={item.name}
+              value={this.getValue(item.value)}
+              onDelete={() => this.handleDelete(i)}
+            />
           ))}
         </div>
 

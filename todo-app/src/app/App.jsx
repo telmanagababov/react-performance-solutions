@@ -27,13 +27,19 @@ class App extends Component {
         <header>Items ({itemsNumber})</header>
 
         <main>
-          <List onChange={(change, items) => (
-            this.addItem({ leftItems: items.length })
-          )}></List>
+          <List 
+            size={leftItems} 
+            onChange={(change, items) => (
+              this.addItem({ leftItems: items.length })
+            )}>
+          </List>
 
-          <List onChange={(change, items) => (
-            this.addItem({ rightItems: items.length })
-          )}></List>
+          <List 
+            size={rightItems} 
+            onChange={(change, items) => (
+              this.addItem({ rightItems: items.length })
+            )}>
+          </List>
         </main>
       </div>
     );

@@ -37,28 +37,6 @@ input:focus {
   height: 380px;
   overflow: hidden auto;
 }
-.item {
-  display: inline-block;
-  font-size: 20px;
-  color: #327a91;
-  padding: 8px;
-  width: 100%;
-  font-weight: bold;
-  font-family: cursive;
-  text-shadow: 2px 2px 4px #52acca;
-}
-.item-name {
-  display: inline-block;
-  width: calc(100% - 80px);
-}
-.item-value {
-  display: inline-block;
-  width: 80px;
-  background: #e02c2c;
-  border-radius: 60px;
-  text-align: center;
-  color: wheat;
-}
 
 .footer {
   padding: 20px;
