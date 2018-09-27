@@ -6,8 +6,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      leftItems: 200,
-      rightItems: 200,
+      leftItems: 400,
+      rightItems: 400,
     };
   }
 

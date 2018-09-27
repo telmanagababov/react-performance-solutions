@@ -58,6 +58,13 @@ class List extends Component {
     });
   }
 
+  handleSelect(index) {
+    const items = this.state.items.map((item, i) => (
+      {...item, isSelected: i === index}
+    ))
+    this.setState({ items })
+  }
+
   render() {
     const { items, input } = this.state;
 
@@ -79,9 +86,10 @@ class List extends Component {
         <div className="list">
           {items.map((item, i) => (
             <Item 
-              key={`${item.name}:${i}`}
               name={item.name}
               value={this.getValue(item.value)}
+              isSelected={item.isSelected}
+              onSelect={() => this.handleSelect(i)}
               onDelete={() => this.handleDelete(i)}
             />
           ))}
