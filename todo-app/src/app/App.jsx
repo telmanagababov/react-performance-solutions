@@ -6,8 +6,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      leftItems: 400,
-      rightItems: 400,
+      leftItems: 500,
+      rightItems: 2000,
     };
   }
 
@@ -27,16 +27,17 @@ class App extends Component {
         <header>Items ({itemsNumber})</header>
 
         <main>
-          <List 
-            size={leftItems} 
-            onChange={(change, items) => (
+          <List
+            size={leftItems}
+            onChange={(items) => (
               this.addItem({ leftItems: items.length })
             )}>
           </List>
 
-          <List 
-            size={rightItems} 
-            onChange={(change, items) => (
+          <List
+            isFilterable
+            size={rightItems}
+            onChange={(items) => (
               this.addItem({ rightItems: items.length })
             )}>
           </List>

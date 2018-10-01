@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
 import Item from './Item';
-import { generateItems } from './items';
+import { generateItems, getRandomValue } from './items';
 import './List.css';
 
 class List extends Component {
   constructor(props) {
     super(props);
+
+    const input = '';
+    const items = generateItems(props.size);
+    const filteredItems = this.getFilteredItems(items, input);
+
     this.state = {
-      input: {
-        name: '',
-        value: '',
-      },
-      items: generateItems(props.size),
+      input,
+      items,
+      filteredItems,
     };
+  }
+
+  getFilteredItems(items, input) {
+    if (!this.props.isFilterable || input === '') {
+      return items;
+    }
+    return items.filter(item => (
+      item.name.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    ));
   }
 
   getValue(value) {
@@ -21,71 +33,92 @@ class List extends Component {
     return this.getValue(value - 1) + this.getValue(value - 2);
   }
 
-  handlePress(key) {
-    const { items, input } = this.state;
-    const { onChange } = this.props;
+  handleInput(input) {
+    const filteredItems = this.getFilteredItems(this.state.items, input);
 
-    if (key === 'Enter') {
-      this.setState({
-        input: {
-          name: '',
-          value: '',
-        },
-        items: [].concat(input, items),
-      }, () => {
-        onChange(input, this.state.items);
-      });
-    }
+    this.setState({
+      input,
+      filteredItems,
+    });
   }
 
-  handleInput(change) {
+  handleAddItem() {
+    const { onChange } = this.props;
+    const newItem = { name: this.state.input, value: getRandomValue() };
+    const input = '';
+    const items = [].concat(newItem, this.state.items);
+    const filteredItems = this.getFilteredItems(items, input);
+
     this.setState({
-      input: {
-        ...this.state.input,
-        ...change,
-      }
-    })
+      input,
+      items,
+      filteredItems,
+    }, () => {
+      onChange(this.state.items);
+    });
+  }
+
+  handleRemoveItems() {
+    const { onChange } = this.props;
+    const items = this.state.items.filter(item => !item.isSelected);
+    const filteredItems = this.getFilteredItems(items, this.state.input);
+
+    this.setState({
+      items,
+      filteredItems,
+    }, () => {
+      onChange(this.state.items);
+    });
   }
 
   handleDelete(index) {
-    const { items, input } = this.state;
     const { onChange } = this.props;
+    const items = this.state.items.slice(0, index).concat(this.state.items.slice(index + 1));
+    const filteredItems = this.getFilteredItems(items, this.state.input);
 
     this.setState({
-      items: items.slice(0, index).concat(items.slice(index + 1)),
+      items,
+      filteredItems,
     }, () => {
-      onChange(input, this.state.items);
+      onChange(this.state.items);
     });
   }
 
   handleSelect(index) {
-    const items = this.state.items.map((item, i) => (
-      {...item, isSelected: i === index}
-    ))
-    this.setState({ items })
+    const filteredItems = this.state.filteredItems.concat();
+    filteredItems[index].isSelected = !filteredItems[index].isSelected;
+    this.setState({ filteredItems })
   }
 
   render() {
-    const { items, input } = this.state;
+    const { filteredItems, input } = this.state;
+    const hasSelectedItems = this.state.filteredItems.some(item => item.isSelected);
 
     return (
       <div className="list-container">
-        <dv className="controls" onKeyPress={event => this.handlePress(event.key)}>
+        <dv className="controls">
           <input
             className="input-name"
-            onChange={event => this.handleInput({ name: event.target.value })}
-            value={input.name} >
+            onChange={event => this.handleInput(event.target.value)}
+            value={input} >
           </input>
-          <input
-            className="input-value"
-            onChange={event => this.handleInput({ value: event.target.value })}
-            value={input.value} >
-          </input>
+          <button
+            className="add-item-control"
+            onClick={() => this.handleAddItem()}
+            disabled={!input}>
+            Add
+          </button>
+          <button
+            className="remove-items-control"
+            onClick={() => this.handleRemoveItems()}
+            disabled={!hasSelectedItems}>
+            Del
+          </button>
         </dv>
 
         <div className="list">
-          {items.map((item, i) => (
-            <Item 
+          {filteredItems.map((item, i) => (
+            <Item
               name={item.name}
               value={this.getValue(item.value)}
               isSelected={item.isSelected}
@@ -96,7 +129,7 @@ class List extends Component {
         </div>
 
         <div className="footer">
-          {`items: ${items.length}`}
+          {`items: ${filteredItems.length}`}
         </div>
       </div>
     );

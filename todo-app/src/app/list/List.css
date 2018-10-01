@@ -23,13 +23,28 @@ input:focus {
   border-radius: 6px;
 }
 .input-name {
-  width: calc(100% - 110px);
-  margin-right: 4px;
+  width: calc(100% - 150px);
 }
-.input-value {
-  width: 78px;
+.add-item-control,
+.remove-items-control {
+  width: 64px;
+  height: 56px;
+  border: 3px solid #297f9b;
+  border-radius: 6px;
+  color: #17b8ee;
+  font-family: cursive;
+  font-size: 24px;
+  line-height: 48px;
+  padding: 5px;
+  margin-left: 4px;
+  cursor: pointer;
 }
-
+.add-item-control:disabled,
+.remove-items-control:disabled {
+  border: 3px solid #7d848c;
+  color:#666;
+  cursor: default;
+}
 
 .list {
   padding: 20px;
