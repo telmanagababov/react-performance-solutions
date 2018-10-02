@@ -9,7 +9,7 @@
   display: block;
   width: 100%;
 }
-input {
+.controls input {
   border: 3px solid #297f9b;
   border-radius: 6px;
   color: #17b8ee;
@@ -18,15 +18,15 @@ input {
   line-height: 44px;
   padding: 4px;
 }
-input:focus {
+.controls input:focus {
   border: 3px solid #aec32d;
   border-radius: 6px;
 }
-.input-name {
+.controls .input-name {
   width: calc(100% - 150px);
 }
-.add-item-control,
-.remove-items-control {
+.controls .add-item-control,
+.controls .remove-items-control {
   width: 64px;
   height: 56px;
   border: 3px solid #297f9b;
@@ -39,8 +39,8 @@ input:focus {
   margin-left: 4px;
   cursor: pointer;
 }
-.add-item-control:disabled,
-.remove-items-control:disabled {
+.controls .add-item-control:disabled,
+.controls .remove-items-control:disabled {
   border: 3px solid #7d848c;
   color:#666;
   cursor: default;
