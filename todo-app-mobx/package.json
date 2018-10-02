@@ -1,0 +1,20 @@
+{
+  "name": "todo-app-mobx",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "mobx": "^5.5.0",
+    "mobx-devtools": "^0.9.18",
+    "mobx-react": "^5.2.8",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "1.1.5",
+    "why-did-you-update": "^0.1.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

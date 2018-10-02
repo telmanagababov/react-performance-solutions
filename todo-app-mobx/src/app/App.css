@@ -1,0 +1,27 @@
+html {
+  overflow: hidden;
+}
+
+header {
+  text-align: center;
+  padding: 40px 0 0px 0;
+  font-size: 34px;
+  font-family: cursive;
+}
+
+main {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 20px;
+}
+*::-webkit-scrollbar-track {
+  background: #ddd;
+  border-radius: 20px;
+}
