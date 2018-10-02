@@ -9,7 +9,11 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.model = new AppModel();
+
+    this.model = new AppModel({
+      leftItems: 500,
+      rightItems: 2000
+    });
   }
 
   addItem(change) {
