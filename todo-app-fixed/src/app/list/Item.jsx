@@ -1,19 +1,25 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import './Item.css';
 
-class Item extends Component {
-  handleDelete(event) {
+class Item extends PureComponent {
+  handleSelect = () => {
+    const { id, onSelect } = this.props;
+    onSelect(id);
+  };
+
+  handleDelete = (event) => {
+    const { id, onDelete } = this.props;
     event.stopPropagation();
-    this.props.onDelete();
-  }
+    onDelete(id);
+  };
 
   render() {
-    const { name, value, isSelected, onSelect } = this.props;
+    const { name, value, isSelected } = this.props;
 
     return (
       <div
         className={`item ${isSelected ? 'item-selected' : ''}`}
-        onClick={onSelect}
+        onClick={this.handleSelect}
       >
         <div className="item-name">
           {name}
@@ -23,7 +29,7 @@ class Item extends Component {
         </div>
         <div
           className="item-remove-icon"
-          onClick={(event) => this.handleDelete(event)}
+          onClick={this.handleDelete}
         >X</div>
       </div>
     );

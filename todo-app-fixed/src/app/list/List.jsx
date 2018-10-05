@@ -33,16 +33,17 @@ class List extends Component {
     return this.getValue(value - 1) + this.getValue(value - 2);
   }
 
-  handleInput(input) {
+  handleInput = (event) => {
+    const input = event.target.value;
     const filteredItems = this.getFilteredItems(this.state.items, input);
 
     this.setState({
       input,
       filteredItems,
     });
-  }
+  };
 
-  handleAddItem() {
+  handleAddItem = () => {
     const { onChange } = this.props;
     const newItem = { name: this.state.input, value: getRandomValue() };
     const input = '';
@@ -56,9 +57,9 @@ class List extends Component {
     }, () => {
       onChange(this.state.items);
     });
-  }
+  };
 
-  handleRemoveItems() {
+  handleRemoveItems = () => {
     const { onChange } = this.props;
     const items = this.state.items.filter(item => !item.isSelected);
     const filteredItems = this.getFilteredItems(items, this.state.input);
@@ -69,48 +70,48 @@ class List extends Component {
     }, () => {
       onChange(this.state.items);
     });
-  }
+  };
 
-  handleDelete(index) {
-    const { onChange } = this.props;
-    const items = this.state.items.slice(0, index).concat(this.state.items.slice(index + 1));
-    const filteredItems = this.getFilteredItems(items, this.state.input);
+  handleDelete = (id) => {
+    const { onChange, items, input } = this.props;
+    const remainingItems = items.slice(0, id).concat(items.slice(id + 1));
+    const filteredItems = this.getFilteredItems(remainingItems, input);
 
     this.setState({
-      items,
+      items: remainingItems,
       filteredItems,
     }, () => {
       onChange(this.state.items);
     });
-  }
+  };
 
-  handleSelect(index) {
+  handleSelect = (id) => {
     const filteredItems = this.state.filteredItems.concat();
-    filteredItems[index].isSelected = !filteredItems[index].isSelected;
+    filteredItems[id].isSelected = !filteredItems[id].isSelected;
     this.setState({ filteredItems })
-  }
+  };
 
   render() {
     const { filteredItems, input } = this.state;
-    const hasSelectedItems = this.state.filteredItems.some(item => item.isSelected);
+    const hasSelectedItems = filteredItems.some(item => item.isSelected);
 
     return (
       <div className="list-container">
         <dv className="controls">
           <input
             className="input-name"
-            onChange={event => this.handleInput(event.target.value)}
+            onChange={this.handleInput}
             value={input} >
           </input>
           <button
             className="add-item-control"
-            onClick={() => this.handleAddItem()}
+            onClick={this.handleAddItem}
             disabled={!input}>
             Add
           </button>
           <button
             className="remove-items-control"
-            onClick={() => this.handleRemoveItems()}
+            onClick={this.handleRemoveItems}
             disabled={!hasSelectedItems}>
             Del
           </button>
@@ -119,11 +120,13 @@ class List extends Component {
         <div className="list">
           {filteredItems.map((item, i) => (
             <Item
+              key={i}
+              id={i}
               name={item.name}
               value={this.getValue(item.value)}
               isSelected={item.isSelected}
-              onSelect={() => this.handleSelect(i)}
-              onDelete={() => this.handleDelete(i)}
+              onSelect={this.handleSelect}
+              onDelete={this.handleDelete}
             />
           ))}
         </div>
