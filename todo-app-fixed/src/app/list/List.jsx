@@ -1,24 +1,26 @@
-import React, { Component } from 'react';
-import Item from './Item';
-import { generateItems, getRandomValue } from './items';
+import React, { PureComponent } from 'react';
+import { List as VirtualizedList } from 'react-virtualized';
+import Item from './item/Item';
+import { generateItems, getRandomValue } from './item/items';
+import ListControls from './controls/ListControls';
 import './List.css';
 
-class List extends Component {
+class List extends PureComponent {
   constructor(props) {
     super(props);
 
-    const input = '';
     const items = generateItems(props.size);
-    const filteredItems = this.getFilteredItems(items, input);
+    const filter = ''
+    const filteredItems = this.getFilteredItems(items, filter);
 
     this.state = {
-      input,
       items,
       filteredItems,
+      filter,
     };
   }
 
-  getFilteredItems(items, input) {
+  getFilteredItems(items, input = '') {
     if (!this.props.isFilterable || input === '') {
       return items;
     }
@@ -27,31 +29,26 @@ class List extends Component {
     ));
   }
 
-  getValue(value) {
-    if (value <= 0) return 0;
-    if (value === 1) return 1;
-    return this.getValue(value - 1) + this.getValue(value - 2);
-  }
-
-  handleInput = (event) => {
-    const input = event.target.value;
-    const filteredItems = this.getFilteredItems(this.state.items, input);
+  handleInput = (input) => {
+    const { isFilterable } = this.props;
+    const { items } = this.state;
+    const filter = isFilterable ? input : this.state.filter;
+    const filteredItems = this.getFilteredItems(items, filter);
 
     this.setState({
-      input,
       filteredItems,
+      filter,
     });
   };
 
-  handleAddItem = () => {
+  handleAddItem = (name) => {
     const { onChange } = this.props;
-    const newItem = { name: this.state.input, value: getRandomValue() };
-    const input = '';
+    const { filter } = this.state;
+    const newItem = { name, value: getRandomValue() };
     const items = [].concat(newItem, this.state.items);
-    const filteredItems = this.getFilteredItems(items, input);
+    const filteredItems = this.getFilteredItems(items, filter);
 
     this.setState({
-      input,
       items,
       filteredItems,
     }, () => {
@@ -61,8 +58,9 @@ class List extends Component {
 
   handleRemoveItems = () => {
     const { onChange } = this.props;
+    const { filter } = this.state;
     const items = this.state.items.filter(item => !item.isSelected);
-    const filteredItems = this.getFilteredItems(items, this.state.input);
+    const filteredItems = this.getFilteredItems(items, filter);
 
     this.setState({
       items,
@@ -73,9 +71,10 @@ class List extends Component {
   };
 
   handleDelete = (id) => {
-    const { onChange, items, input } = this.props;
+    const { onChange } = this.props;
+    const { items, filter } = this.state;
     const remainingItems = items.slice(0, id).concat(items.slice(id + 1));
-    const filteredItems = this.getFilteredItems(remainingItems, input);
+    const filteredItems = this.getFilteredItems(remainingItems, filter);
 
     this.setState({
       items: remainingItems,
@@ -91,45 +90,57 @@ class List extends Component {
     this.setState({ filteredItems })
   };
 
+  rowRenderer = ({ key, index, style, isScrolling }) => {
+    const item = this.state.filteredItems[index];
+
+    // if (isScrolling) {
+    //   return (
+    //     <div
+    //       className="scrolling-item"
+    //       key={key}
+    //       style={style}>
+    //       Scrolling...
+    //     </div>
+    //   );
+    // }
+
+    return (
+      <div style={style} key={key}>
+        <Item
+          id={index}
+          name={item.name}
+          value={item.value}
+          isSelected={item.isSelected}
+          onSelect={this.handleSelect}
+          onDelete={this.handleDelete}
+        />
+      </div>
+    )
+  };
+
   render() {
-    const { filteredItems, input } = this.state;
+    const { filteredItems } = this.state;
     const hasSelectedItems = filteredItems.some(item => item.isSelected);
 
     return (
       <div className="list-container">
-        <dv className="controls">
-          <input
-            className="input-name"
-            onChange={this.handleInput}
-            value={input} >
-          </input>
-          <button
-            className="add-item-control"
-            onClick={this.handleAddItem}
-            disabled={!input}>
-            Add
-          </button>
-          <button
-            className="remove-items-control"
-            onClick={this.handleRemoveItems}
-            disabled={!hasSelectedItems}>
-            Del
-          </button>
-        </dv>
+        <ListControls
+          hasSelectedItems={hasSelectedItems}
+          onInput={this.handleInput}
+          onAdd={this.handleAddItem}
+          onRemove={this.handleRemoveItems}
+        />
 
-        <div className="list">
-          {filteredItems.map((item, i) => (
-            <Item
-              key={i}
-              id={i}
-              name={item.name}
-              value={this.getValue(item.value)}
-              isSelected={item.isSelected}
-              onSelect={this.handleSelect}
-              onDelete={this.handleDelete}
-            />
-          ))}
-        </div>
+        <VirtualizedList
+          className="list"
+          width={500}
+          height={450}
+          rowCount={filteredItems.length}
+          rowHeight={48}
+          rowRenderer={this.rowRenderer}
+          items={filteredItems}
+          overscanRowCount={10}
+        />
 
         <div className="footer">
           {`items: ${filteredItems.length}`}

@@ -1,3 +1,5 @@
+import { memoize } from 'lodash';
+
 const names = [
   'Jim',
   'Ken',
@@ -17,12 +19,20 @@ const names = [
   'Jim',
 ];
 
+const toValue = memoize(
+  function getValue(value) {
+    if (value <= 0) return 0;
+    if (value === 1) return 1;
+    return getValue(value - 1) + getValue(value - 2);
+  }
+);
+
 export function getRandomName() {
   return names[Math.ceil(Math.random() * (names.length - 1))];
 }
 
 export function getRandomValue() {
-  return 10 + Math.round(Math.random() * 20);
+  return toValue(10 + Math.round(Math.random() * 20));
 }
 
 export function generateItems(itemsNumber) {

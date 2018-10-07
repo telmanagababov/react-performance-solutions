@@ -4,14 +4,14 @@
   font-size: 20px;
   color: #327a91;
   padding: 8px;
-  width: 100%;
+  width: calc(100% - 18px);
   font-weight: bold;
   font-family: cursive;
   text-shadow: 2px 2px 4px #52acca;
 }
 .item-name {
   display: inline-block;
-  width: calc(100% - 110px);
+  width: calc(100% - 120px);
 }
 .item-value {
   display: inline-block;
@@ -31,4 +31,8 @@
 .item-selected {
   background: #72b7c396;
   border-radius: 8px;
+}
+
+.scrolling-item {
+
 }

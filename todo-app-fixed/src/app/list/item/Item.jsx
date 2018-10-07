@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import './Item.css';
 
 class Item extends PureComponent {
@@ -14,11 +14,12 @@ class Item extends PureComponent {
   };
 
   render() {
-    const { name, value, isSelected } = this.props;
+    const { name, value, isSelected, style } = this.props;
 
     return (
       <div
         className={`item ${isSelected ? 'item-selected' : ''}`}
+        style={style}
         onClick={this.handleSelect}
       >
         <div className="item-name">
