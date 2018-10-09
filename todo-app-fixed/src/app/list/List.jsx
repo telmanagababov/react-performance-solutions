@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { FixedSizeList } from 'react-window';
+import { debounce } from 'lodash';
 import Item from './item/Item';
 import { generateItems, getRandomValue } from './item/items';
 import ListControls from './controls/ListControls';
@@ -29,7 +30,7 @@ class List extends PureComponent {
     ));
   }
 
-  handleInput = (input) => {
+  handleInput = debounce((input) => {
     const { isFilterable } = this.props;
     const { items } = this.state;
     const filter = isFilterable ? input : this.state.filter;
@@ -39,7 +40,7 @@ class List extends PureComponent {
       filteredItems,
       filter,
     });
-  };
+  }, 250);
 
   handleAddItem = (name) => {
     const { onChange } = this.props;

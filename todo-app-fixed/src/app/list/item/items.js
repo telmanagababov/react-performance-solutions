@@ -1,14 +1,14 @@
 import { memoize } from 'lodash';
 
 const names = [
-  'Jim',
-  'Ken',
-  'Murray',
-  'Koen',
-  'Charlie',
-  'Donald',
-  'Bart',
-  'Gregory',
+  'Bailee',
+  'Bailey',
+  'Beatrice',
+  'Beatrix',
+  'Beatriz',
+  'Beau',
+  'Belen',
+  'Belinda',
   'Doug',
   'Peter',
   'Sarah',
@@ -16,7 +16,6 @@ const names = [
   'Brook',
   'Liam',
   'Zak',
-  'Jim',
 ];
 
 const toValue = memoize(
