@@ -15,6 +15,14 @@ class ListControls extends PureComponent {
     });
   }
 
+  handleKeyPress = (event) => {
+    const { key } = event;
+
+    if (key === 'Enter') {
+      this.handleAddItem();
+    }
+  };
+
   handleInput = (event) => {
     const input = event.target.value;
 
@@ -37,6 +45,7 @@ class ListControls extends PureComponent {
       <dv className="controls">
         <input
           className="input-name"
+          onKeyPress={this.handleKeyPress}
           onChange={this.handleInput}
           value={input} >
         </input>

@@ -8,6 +8,7 @@
   font-weight: bold;
   font-family: cursive;
   text-shadow: 2px 2px 4px #52acca;
+  box-sizing: border-box;
 }
 .item-name {
   display: inline-block;

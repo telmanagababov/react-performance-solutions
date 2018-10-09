@@ -11,12 +11,13 @@ class App extends Component {
     };
   }
 
-  addItem(change) {
-    this.setState({
-      ...this.state,
-      ...change,
-    });
-  }
+  addLeftItems = ({ length }) => {
+    this.setState({ leftItems: length });
+  };
+
+  addRightItems = ({ length }) => {
+    this.setState({ rightItems: length });
+  };
 
   render() {
     const { leftItems, rightItems } = this.state;
@@ -29,17 +30,13 @@ class App extends Component {
         <main>
           <List
             size={leftItems}
-            onChange={(items) => (
-              this.addItem({ leftItems: items.length })
-            )}>
+            onChange={this.addLeftItems}>
           </List>
 
           <List
             isFilterable
             size={rightItems}
-            onChange={(items) => (
-              this.addItem({ rightItems: items.length })
-            )}>
+            onChange={this.addRightItems}>
           </List>
         </main>
       </div>

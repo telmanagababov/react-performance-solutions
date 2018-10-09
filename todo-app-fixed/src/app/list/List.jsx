@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { List as VirtualizedList } from 'react-virtualized';
+import { FixedSizeList } from 'react-window';
 import Item from './item/Item';
 import { generateItems, getRandomValue } from './item/items';
 import ListControls from './controls/ListControls';
@@ -45,7 +45,7 @@ class List extends PureComponent {
     const { onChange } = this.props;
     const { filter } = this.state;
     const newItem = { name, value: getRandomValue() };
-    const items = [].concat(newItem, this.state.items);
+    const items = [newItem, ...this.state.items];
     const filteredItems = this.getFilteredItems(items, filter);
 
     this.setState({
@@ -90,31 +90,18 @@ class List extends PureComponent {
     this.setState({ filteredItems })
   };
 
-  rowRenderer = ({ key, index, style, isScrolling }) => {
+  rowRenderer = ({ index, style }) => {
     const item = this.state.filteredItems[index];
-
-    // if (isScrolling) {
-    //   return (
-    //     <div
-    //       className="scrolling-item"
-    //       key={key}
-    //       style={style}>
-    //       Scrolling...
-    //     </div>
-    //   );
-    // }
-
     return (
-      <div style={style} key={key}>
-        <Item
-          id={index}
-          name={item.name}
-          value={item.value}
-          isSelected={item.isSelected}
-          onSelect={this.handleSelect}
-          onDelete={this.handleDelete}
-        />
-      </div>
+      <Item
+        style={style}
+        id={index}
+        name={item.name}
+        value={item.value}
+        isSelected={item.isSelected}
+        onSelect={this.handleSelect}
+        onDelete={this.handleDelete}
+      />
     )
   };
 
@@ -131,16 +118,16 @@ class List extends PureComponent {
           onRemove={this.handleRemoveItems}
         />
 
-        <VirtualizedList
+        <FixedSizeList
           className="list"
           width={500}
-          height={450}
-          rowCount={filteredItems.length}
-          rowHeight={48}
-          rowRenderer={this.rowRenderer}
-          items={filteredItems}
-          overscanRowCount={10}
-        />
+          height={400}
+          itemSize={48}
+          itemCount={filteredItems.length}
+          filteredItems={filteredItems}
+        >
+          {this.rowRenderer}
+        </FixedSizeList>
 
         <div className="footer">
           {`items: ${filteredItems.length}`}
